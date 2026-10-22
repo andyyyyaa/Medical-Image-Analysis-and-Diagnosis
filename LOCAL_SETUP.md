@@ -1,40 +1,40 @@
-# 本地运行
+# Running locally
 
-环境：macOS Apple Silicon，Python 3.12，项目内 `.venv`。
+Environment: macOS Apple Silicon, Python 3.12, and a project-local `.venv`.
 
-## 启动
+## Start the server
 
-双击 `启动本地服务.command`，等待模型加载，然后访问：
+Double-click `start_local.command`, wait for the models to load, then visit:
 
 http://127.0.0.1:5050
 
-也可以在终端运行：
+You can also run the following in a terminal from the cloned project directory:
 
 ```bash
-cd ~/Desktop/healthcare_6.0
 .venv/bin/python start_local.py
 ```
 
-在运行服务的终端按 Control+C，或双击 `停止本地服务.command` 停止。
-如使用 README 中的后台启动命令，日志位于 `.local/server.log`。
-默认仅监听本机；5000 端口已被 macOS 使用，因此选择 5050。
-如需改端口：`PORT=5051 .venv/bin/python start_local.py`。
+Press Control+C in the server terminal, or double-click `stop_local.command` to stop it.
+If you use the background startup command in the README, logs are written to `.local/server.log`.
+By default, the server listens only on the local machine. Port 5050 was chosen because macOS was already using port 5000 in the verified environment.
+To change the port: `PORT=5051 .venv/bin/python start_local.py`.
 
-## 重新安装环境
+## Reinstall the environment
+
+Run from the project directory:
 
 ```bash
-cd ~/Desktop/healthcare_6.0
 python3.12 -m venv .venv
 .venv/bin/python -m pip install -r requirements.txt
 ```
 
-`requirements.txt` 保存了本次验证通过的完整依赖版本。
-心脏预测模型由 scikit-learn 1.6.1 保存，因此使用同一版本加载。
-骨折模型使用 CPU 推理。
-首次启动会下载官方基础权重，并缓存到 `.local/torch`。
-从 GitHub 克隆的新环境还需按照 [README](README.md) 下载模型，
-然后运行 `.venv/bin/python init_database.py` 创建空数据库。
+`requirements.txt` records the full dependency versions used in the previously verified environment.
+The heart prediction models were saved with scikit-learn 1.6.1, so load them with the same version.
+Fracture inference uses CPU when CUDA is unavailable.
+The first startup downloads the official base weights and caches them in `.local/torch`.
+For a fresh clone from GitHub, download the models as described in the [README](README.md),
+then run `.venv/bin/python init_database.py` to create an empty database.
 
-本地会话密钥自动保存在 `.local/secret_key`，请勿分享该文件。
-现有 `user_db.sqlite3` 和模型文件继续使用。
-不要运行 `create_database.py`：它会删除并重建现有数据表。
+The local session key is saved automatically in `.local/secret_key`. Do not share this file.
+Existing `user_db.sqlite3` and model files can continue to be used.
+Do not run `create_database.py`: it drops and recreates existing tables.
