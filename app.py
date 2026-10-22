@@ -27,20 +27,20 @@ import uuid
 
 matplotlib.use('Agg')
 
-# 创建Flask应用
+# Create the Flask application
 app = Flask(__name__)
 
-# 生产环境配置
+# Production configuration
 app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
-app.config['SESSION_COOKIE_SECURE'] = False  # 如果使用HTTP则设为False，HTTPS则设为True
-app.config['SESSION_COOKIE_HTTPONLY'] = True  # 防止XSS攻击
-app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF保护
-app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # session过期时间1小时
+app.config['SESSION_COOKIE_SECURE'] = False  # Set to False for HTTP and True for HTTPS
+app.config['SESSION_COOKIE_HTTPONLY'] = True  # Prevent JavaScript access to session cookies
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'  # CSRF protection
+app.config['PERMANENT_SESSION_LIFETIME'] = 3600  # Session lifetime: one hour
 
-# CORS配置
+# CORS configuration
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# 设置最大文件上传大小 (16MB)
+# Set the maximum upload size (16 MB)
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 
@@ -106,11 +106,11 @@ def query(form: dict):
         sql += " AND name = ?"
         params.append(form["name"])
 
-    # 执行查询并转为列表
+    # Execute the query and load the results
     df = pd.read_sql_query(sql, conn, params=params)
     conn.close()
 
-    # 转为原来的 list[dict] 格式
+    # Return the original list[dict] format
     return df.to_dict(orient="records")
 
 
@@ -137,11 +137,11 @@ def query_heart(form: dict):
         sql += " AND name = ?"
         params.append(form["name"])
 
-    # 执行查询并转为列表
+    # Execute the query and load the results
     df = pd.read_sql_query(sql, conn, params=params)
     conn.close()
 
-    # 转为原来的 list[dict] 格式
+    # Return the original list[dict] format
     return df.to_dict(orient="records")
 
 
@@ -332,16 +332,16 @@ class_labels = ['Avulsion Fracture', 'Comminuted Fracture', 'Fracture Dislocatio
 
 
 fracture_treatment = {
-    "Avulsion Fracture": "撕脱性骨折:立即停止活动，避免用力拉扯受伤部位。用冰敷减少肿胀，尽量保持骨折部位静止并前往医院治疗。Stop activity immediately, avoid pulling the injured area. Apply ice to reduce swelling, immobilize the fracture site, and seek medical attention.",
-    "Comminuted Fracture": "粉碎性骨折:由于骨折呈多片状，需避免任何形式的移动。用冷敷减轻肿胀，并使用绷带固定骨折部位，尽快就医。Avoid any movement due to multiple bone fragments. Use cold compresses to reduce swelling, stabilize the fracture with a bandage, and seek immediate medical attention.",
-    "Fracture Dislocation": "骨折脱位:避免试图自行复位，避免对脱位部位施加压力或拉扯。使用夹板或绷带固定，尽快就医处理，通常需要手术复位。Do not attempt to reposition by yourself or apply pressure. Immobilize with splint or bandage and seek immediate medical treatment, usually requiring surgical intervention.",
-    "Greenstick Fracture": "青枝骨折:通常发生在儿童身上，骨折部位容易弯曲而不完全断裂。通过支撑和固定骨折部位来减少疼痛，适时就医，可能需要石膏或夹板。Common in children, causing partial bending without complete break. Reduce pain by supporting and immobilizing the fracture. Seek medical attention, possibly requiring cast or splint.",
-    "Hairline Fracture": "线性骨折:这种骨折通常症状较轻，但仍需休息，避免对受伤部位施加压力或负重。就医确诊后可能需要佩戴夹板或石膏。Usually minor but requires rest; avoid putting weight on the area. Seek medical evaluation, may require splint or cast.",
-    "Impacted Fracture": "嵌入性骨折:骨折的两端嵌入彼此，避免强行活动或承重。用冰敷减少肿胀，避免移动并立即就医治疗，通常需要放射检查来确定是否需要手术。Bone ends impacted into each other; avoid forced movement or weight-bearing. Apply ice to reduce swelling, immobilize and seek medical care, typically requiring imaging to determine surgical needs.",
-    "Longitudinal Fracture": "纵向骨折:这类骨折通常沿骨的长度方向发生。立即避免移动受伤部位，使用夹板或绷带固定，并尽快就医处理。Fracture occurs lengthwise along the bone. Avoid movement immediately, stabilize using a splint or bandage, and seek prompt medical attention.",
-    "Oblique Fracture": "斜向骨折:这种骨折通常是斜向断裂。立即避免移动骨折部位，使用夹板或支架固定，并及时就医。Typically an angled fracture; immediately avoid moving the area, immobilize with a splint or brace, and promptly seek medical care.",
-    "Pathological Fracture": "病理性骨折:此类骨折是由于原有的疾病，如肿瘤或骨质疏松，导致的，通常较为脆弱。避免施加压力，减少活动并尽快就医进行详细检查和治疗。Occurs due to underlying conditions such as tumors or osteoporosis. Avoid pressure, limit activity, and seek medical attention immediately for thorough evaluation and treatment.",
-    "Spiral Fracture": "螺旋骨折:通常由于扭转或拉伸的暴力引起，需避免任何形式的负重或用力，立即进行固定，并前往医院治疗，通常需要影像学检查来评估伤势。Caused by twisting or pulling force; avoid weight-bearing immediately, immobilize the fracture, and seek medical attention promptly, usually requiring imaging to assess injury severity."
+    "Avulsion Fracture": "Stop activity immediately, avoid pulling the injured area. Apply ice to reduce swelling, immobilize the fracture site, and seek medical attention.",
+    "Comminuted Fracture": "Avoid any movement due to multiple bone fragments. Use cold compresses to reduce swelling, stabilize the fracture with a bandage, and seek immediate medical attention.",
+    "Fracture Dislocation": "Do not attempt to reposition by yourself or apply pressure. Immobilize with splint or bandage and seek immediate medical treatment, usually requiring surgical intervention.",
+    "Greenstick Fracture": "Common in children, causing partial bending without complete break. Reduce pain by supporting and immobilizing the fracture. Seek medical attention, possibly requiring cast or splint.",
+    "Hairline Fracture": "Usually minor but requires rest; avoid putting weight on the area. Seek medical evaluation, may require splint or cast.",
+    "Impacted Fracture": "Bone ends impacted into each other; avoid forced movement or weight-bearing. Apply ice to reduce swelling, immobilize and seek medical care, typically requiring imaging to determine surgical needs.",
+    "Longitudinal Fracture": "Fracture occurs lengthwise along the bone. Avoid movement immediately, stabilize using a splint or bandage, and seek prompt medical attention.",
+    "Oblique Fracture": "Typically an angled fracture; immediately avoid moving the area, immobilize with a splint or brace, and promptly seek medical care.",
+    "Pathological Fracture": "Occurs due to underlying conditions such as tumors or osteoporosis. Avoid pressure, limit activity, and seek medical attention immediately for thorough evaluation and treatment.",
+    "Spiral Fracture": "Caused by twisting or pulling force; avoid weight-bearing immediately, immobilize the fracture, and seek medical attention promptly, usually requiring imaging to assess injury severity."
 }
 @app.route('/')
 def home():
@@ -529,10 +529,10 @@ def heart_disease_prediction_result():
             input_cp_2=0
             input_cp_3=1
 
-        if int(fbs)>120:#高于120mg/dl
+        if int(fbs)>120:#Above 120 mg/dl
             input_fbs_0=0
             input_fbs_1=1
-        else:#低于120mg/dl
+        else:#120 mg/dl or below
             input_fbs_0=1
             input_fbs_1=0
 
@@ -560,17 +560,17 @@ def heart_disease_prediction_result():
         
         model_selection=request.form.get("model_selection")
         if model_selection=="lr":
-            # 使用逻辑回归模型预测概率
+            # Predict probabilities using logistic regression
             pred_proba = heart_model_lr.predict_proba(input_data)
             pred = heart_model_lr.predict(input_data)
             model_selection_name="Logistic Regression 1.0"
-            # 获取心脏病风险概率
-            heart_disease_probability = pred_proba[0][1] * 100  # 转换为百分比
+            # Get the predicted heart disease probability
+            heart_disease_probability = pred_proba[0][1] * 100  # Convert to a percentage
         elif model_selection=="p":
-            # 感知器模型只能预测类别，无法提供概率
+            # The Perceptron predicts classes only, without probabilities
             pred = heart_model_p.predict(input_data)
             model_selection_name="Perceptron 1.0"
-            heart_disease_probability = None  # 感知器无法提供概率
+            heart_disease_probability = None  # The Perceptron does not provide probabilities
         
         if pred[0]==0:
             prediction=False
@@ -597,13 +597,13 @@ def heart_disease_prediction_result():
 
 @app.get("/search")
 def search():
-    # 检查用户登录状态
+    # Check whether the user is logged in
     login_status = False
     user_recent_records = []
     
     if session.get('login_name') and session.get('login_name') != "":
         login_status = True
-        # 查询当前用户近五次的骨折诊断记录
+        # Query the current user's five most recent fracture records
         conn = sqlite3.connect("user_db.sqlite3")
         cursor = conn.cursor()
         cursor.execute("""
@@ -617,7 +617,7 @@ def search():
         user_recent_records = cursor.fetchall()
         conn.close()
     
-    # 获取筛选条件选项
+    # Get the available filter options
     conn = sqlite3.connect("user_db.sqlite3")
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT sex FROM fracture")
@@ -639,13 +639,13 @@ def table():
 
 @app.get("/search_heart")
 def search_heart():
-    # 检查用户登录状态
+    # Check whether the user is logged in
     login_status = False
     user_recent_records = []
     
     if session.get('login_name') and session.get('login_name') != "":
         login_status = True
-        # 查询当前用户近五次的心脏病评估记录
+        # Query the current user's five most recent heart assessment records
         conn = sqlite3.connect("user_db.sqlite3")
         cursor = conn.cursor()
         cursor.execute("""
@@ -659,7 +659,7 @@ def search_heart():
         user_recent_records = cursor.fetchall()
         conn.close()
     
-    # 获取筛选条件选项
+    # Get the available filter options
     conn = sqlite3.connect("user_db.sqlite3")
     cursor = conn.cursor()
     cursor.execute("SELECT DISTINCT sex FROM heart")
@@ -731,60 +731,60 @@ def signup():
 def login():
     signup_just_finished = True
     if request.method == "POST":
-        print("=== 登录请求开始 ===")
-        print(f"请求方法: {request.method}")
-        print(f"表单数据: {request.form}")
+        print("=== Login request started ===")
+        print(f"Request method: {request.method}")
+        print(f"Form data: {request.form}")
         
         entered_name = request.form.get("name")
         entered_password = request.form.get("password")
         
-        print(f"输入用户名: {entered_name}")
-        print(f"输入密码: {entered_password}")
+        print(f"Entered username: {entered_name}")
+        print(f"Entered password: {entered_password}")
         
         # user_df = pd.read_csv('user_data.csv')
         conn = sqlite3.connect("user_db.sqlite3")
         user_df = pd.read_sql_query("SELECT * FROM user", conn)
         name_index = user_df[user_df['name'] == entered_name]
-        print(f"数据库查询结果: {name_index}")
-        print(f"查询结果类型: {type(name_index)}")
-        print(f"查询结果是否为空: {name_index.empty}")
+        print(f"Database query result: {name_index}")
+        print(f"Query result type: {type(name_index)}")
+        print(f"Query result is empty: {name_index.empty}")
         conn.close()
         
         # print(user_df)
         # print(name_row)
         if name_index.empty and entered_name:
-            print("用户不存在，重定向到注册页面")
+            print("User not found; redirecting to signup")
             flash("No user found. Please sign up.")
             signup_just_finished = False
             return redirect(url_for("signup"))
         if not (entered_name and entered_password):
-            print("用户名或密码为空")
+            print("Username or password is empty")
             flash("Please enter all the required information.")
             signup_just_finished = False
             return redirect(url_for("login"))
         else:
             correct_password = name_index.iloc[0]['password']
-            print(f"数据库中的密码: {correct_password}")
-            print(f"密码匹配: {correct_password == entered_password}")
+            print(f"Password in database: {correct_password}")
+            print(f"Password matches: {correct_password == entered_password}")
             
             if correct_password != entered_password:
-                print("密码错误")
+                print("Incorrect password")
                 flash("Wrong password.")
                 signup_just_finished = False
                 return redirect(url_for("login"))
             else:
-                print("登录成功，设置session")
+                print("Login successful; setting the session")
                 flash(f"Welcome, {entered_name}")
                 session['login_name'] = entered_name
-                print(f"Session设置后: {session.get('login_name')}")
+                print(f"Session after update: {session.get('login_name')}")
                 return redirect(url_for("home"))
                 
     return render_template("login.html", signup_just_finished=signup_just_finished)
 
 @app.route("/logout")
 def logout():
-    session.pop('login_name', None)  # 安全地移除session
-    flash("您已成功退出登录")
+    session.pop('login_name', None)  # Safely remove the session value
+    flash("You have been logged out successfully")
     return redirect(url_for("home"))
 
 @app.route("/charts")
@@ -815,9 +815,9 @@ def charts():
         plt.pie(sex_pie_values, labels=sex_pie_labels, autopct=make_autopct(sex_pie_values), startangle=90)
         plt.title('Sex Distribution (Fracture)')
         plt.axis('equal')
-        current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前 .py 文件所在的目录
-        save_dir = os.path.join(current_dir, 'static')  # static 子目录
-        save_path_fracture_sex = os.path.join(save_dir, 'sex_chart_fracture.jpg')  # 最终文件路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))  # Directory containing this Python file
+        save_dir = os.path.join(current_dir, 'static')  # Static subdirectory
+        save_path_fracture_sex = os.path.join(save_dir, 'sex_chart_fracture.jpg')  # Output file path
         plt.savefig(save_path_fracture_sex)
         plt.close()
 
@@ -844,9 +844,9 @@ def charts():
         plt.pie(sex_pie_values, labels=sex_pie_labels, autopct=make_autopct(sex_pie_values), startangle=90)
         plt.title('Sex Distribution (Heart Disease)')
         plt.axis('equal')
-        current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前 .py 文件所在的目录
-        save_dir = os.path.join(current_dir, 'static')  # static 子目录
-        save_path_heart_sex = os.path.join(save_dir, 'sex_chart_heart.jpg')  # 最终文件路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))  # Directory containing this Python file
+        save_dir = os.path.join(current_dir, 'static')  # Static subdirectory
+        save_path_heart_sex = os.path.join(save_dir, 'sex_chart_heart.jpg')  # Output file path
         plt.savefig(save_path_heart_sex)
         plt.close()
 
@@ -869,9 +869,9 @@ def charts():
         plt.title('Age Distribution (Fracture)')
         plt.xlabel('Age')
         plt.ylabel('Number of People')
-        current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前 .py 文件所在的目录
-        save_dir = os.path.join(current_dir, 'static')  # static 子目录
-        save_path_fracture_age = os.path.join(save_dir, 'age_chart_fracture.jpg')  # 最终文件路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))  # Directory containing this Python file
+        save_dir = os.path.join(current_dir, 'static')  # Static subdirectory
+        save_path_fracture_age = os.path.join(save_dir, 'age_chart_fracture.jpg')  # Output file path
         plt.savefig(save_path_fracture_age)
         plt.close()
 
@@ -894,9 +894,9 @@ def charts():
         plt.title('Age Distribution (Heart Disease)')
         plt.xlabel('Age')
         plt.ylabel('Number of People')
-        current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前 .py 文件所在的目录
-        save_dir = os.path.join(current_dir, 'static')  # static 子目录
-        save_path_heart_age = os.path.join(save_dir, 'age_chart_heart.jpg')  # 最终文件路径
+        current_dir = os.path.dirname(os.path.abspath(__file__))  # Directory containing this Python file
+        save_dir = os.path.join(current_dir, 'static')  # Static subdirectory
+        save_path_heart_age = os.path.join(save_dir, 'age_chart_heart.jpg')  # Output file path
         plt.savefig(save_path_heart_age)
         plt.close()
 
@@ -911,22 +911,22 @@ def charts():
         fracture_data_presence=False
     else:    
         counts = df['fracture'].value_counts()
-        bars = plt.bar(counts.index, counts.values, color='skyblue')  # 画柱状图
+        bars = plt.bar(counts.index, counts.values, color='skyblue')  # Draw the bar chart
 
-        # 在每个柱子上添加数量标签
+        # Add a count label to each bar
         for bar in bars:
-            height = bar.get_height()  # 柱子高度
+            height = bar.get_height()  # Bar height
             if height!=0:
-                plt.text(bar.get_x() + bar.get_width()/2, height + 0, int(height), ha='center', fontsize=10)  # 显示整数数量，水平居中
+                plt.text(bar.get_x() + bar.get_width()/2, height + 0, int(height), ha='center', fontsize=10)  # Show the integer count, centered horizontally
 
         plt.xlabel('Fracture Category')
         plt.ylabel('Number of People')
         plt.title('Fracture Category Distribution')
-        # plt.xticks(rotation=45)  # 如果类别名长，旋转标签防止重叠
-        plt.tight_layout()  # 自动调整布局，防止标签被遮挡
-        current_dir = os.path.dirname(os.path.abspath(__file__))  # 当前 .py 文件所在的目录
-        save_dir = os.path.join(current_dir, 'static')  # static 子目录
-        save_path_fracture_classification = os.path.join(save_dir, 'classification_chart_fracture.jpg')  # 最终文件路径
+        # plt.xticks(rotation=45)  # Rotate long category labels to prevent overlap
+        plt.tight_layout()  # Adjust the layout to prevent clipped labels
+        current_dir = os.path.dirname(os.path.abspath(__file__))  # Directory containing this Python file
+        save_dir = os.path.join(current_dir, 'static')  # Static subdirectory
+        save_path_fracture_classification = os.path.join(save_dir, 'classification_chart_fracture.jpg')  # Output file path
         plt.savefig(save_path_fracture_classification)
         plt.close()
 
@@ -939,11 +939,11 @@ def not_found(error):
     return render_template("404.html"), 404
 
 if __name__ == '__main__':
-    # 生产环境配置
+    # Production configuration
     app.run(
-        host='0.0.0.0',  # 绑定到所有网络接口，允许外部访问
-        port=80,        # 设置端口号
-        debug=False,      # 关闭调试模式，提高安全性
-        threaded=True     # 启用多线程支持
+        host='0.0.0.0',  # Bind to all network interfaces to allow external access
+        port=80,        # Set the port number
+        debug=False,      # Disable debug mode for security
+        threaded=True     # Enable multithreading
     )
     
