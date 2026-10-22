@@ -19,7 +19,7 @@ def main():
     try:
         fcntl.flock(server_lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     except BlockingIOError:
-        print("Healthcare 已在运行，请访问 http://127.0.0.1:5050")
+        print("Healthcare is already running. Visit http://127.0.0.1:5050")
         return
     pid_file = runtime / "server.pid"
     pid_file.write_text(str(os.getpid()) + "\n")
