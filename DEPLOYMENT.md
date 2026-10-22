@@ -1,39 +1,46 @@
-# 生产环境部署说明
+# Production deployment guide
 
-## 问题诊断
+## Diagnosing problems
 
-### Flash失效和登录状态问题的原因
-1. **Session配置问题**: 生产环境下session配置不正确
-2. **Secret Key问题**: 环境变量未正确设置
-3. **Cookie配置问题**: HTTPS/HTTP配置不匹配
+### Causes of flash message and login session issues
 
-## 解决方案
+1. **Session configuration**: Incorrect session configuration in production.
+2. **Secret key**: The environment variable is not set correctly.
+3. **Cookie configuration**: HTTPS/HTTP settings do not match.
 
-### 1. 使用新的启动脚本
+## Solutions
+
+### 1. Use the new startup script
+
 ```bash
-# 使用生产环境启动脚本
+# Use the production startup script
 python3 start_server.py
 ```
 
-### 2. 设置环境变量
+### 2. Set environment variables
+
 ```bash
-# 设置Secret Key (重要!)
+# Set the secret key (important!)
 export SECRET_KEY="your-very-secure-secret-key-here"
 
-# 设置主机和端口
+# Set the host and port
 export HOST="0.0.0.0"
 export PORT="5000"
 ```
 
-### 3. 检查数据库权限
-确保服务器上的数据库文件有正确的读写权限：
+### 3. Check database permissions
+
+Ensure the database file on the server has the appropriate read and write permissions:
+
 ```bash
 chmod 644 user_db.sqlite3
 chmod 755 static/
 ```
 
-### 4. 防火墙配置
-确保服务器防火墙允许5000端口：
+### 4. Configure the firewall
+
+Ensure the server firewall allows port 5000:
+
 ```bash
 # Ubuntu/Debian
 sudo ufw allow 5000
@@ -43,86 +50,94 @@ sudo firewall-cmd --permanent --add-port=5000/tcp
 sudo firewall-cmd --reload
 ```
 
-## 部署步骤
+## Deployment steps
 
-### 1. 上传代码到服务器
+### 1. Upload the code to the server
+
 ```bash
-# 上传所有文件到服务器
+# Upload all files to the server
 scp -r ./* user@your-server:/path/to/app/
 ```
 
-### 2. 安装依赖
+### 2. Install dependencies
+
 ```bash
-# 在服务器上安装依赖
+# Install dependencies on the server
 pip3 install -r requirements.txt
 ```
 
-### 3. 设置环境变量
+### 3. Set environment variables
+
 ```bash
-# 编辑 ~/.bashrc 或 ~/.profile
+# Edit ~/.bashrc or ~/.profile
 echo 'export SECRET_KEY="your-secret-key"' >> ~/.bashrc
 echo 'export HOST="0.0.0.0"' >> ~/.bashrc
 echo 'export PORT="5000"' >> ~/.bashrc
 source ~/.bashrc
 ```
 
-### 4. 启动应用
+### 4. Start the application
+
 ```bash
-# 使用生产环境启动脚本
+# Use the production startup script
 python3 start_server.py
 ```
 
-### 5. 后台运行 (推荐)
+### 5. Run in the background (recommended)
+
 ```bash
-# 使用nohup后台运行
+# Run in the background with nohup
 nohup python3 start_server.py > app.log 2>&1 &
 
-# 或者使用screen
+# Alternatively, use screen
 screen -S healthcare
 python3 start_server.py
-# Ctrl+A, D 分离screen
+# Press Ctrl+A, D to detach from screen
 ```
 
-## 故障排除
+## Troubleshooting
 
-### 1. 检查日志
+### 1. Check logs
+
 ```bash
-# 查看应用日志
+# View application logs
 tail -f app.log
 
-# 查看系统日志
+# View system logs
 sudo journalctl -u your-service -f
 ```
 
-### 2. 检查进程
+### 2. Check processes
+
 ```bash
-# 查看Python进程
+# View Python processes
 ps aux | grep python
 
-# 查看端口占用
+# Check which process is using the port
 netstat -tlnp | grep 5000
 ```
 
-### 3. 测试连接
+### 3. Test connectivity
+
 ```bash
-# 本地测试
+# Local test
 curl http://localhost:5000
 
-# 远程测试
+# Remote test
 curl http://your-server-ip:5000
 ```
 
-## 安全建议
+## Security recommendations
 
-1. **使用HTTPS**: 生产环境建议使用HTTPS
-2. **设置强Secret Key**: 使用随机生成的强密钥
-3. **限制访问**: 使用防火墙限制访问来源
-4. **定期备份**: 定期备份数据库和代码
-5. **监控日志**: 监控应用日志和系统日志
+1. **Use HTTPS**: HTTPS is recommended in production.
+2. **Set a strong secret key**: Use a randomly generated, strong key.
+3. **Restrict access**: Use a firewall to limit allowed sources.
+4. **Back up regularly**: Back up the database and code regularly.
+5. **Monitor logs**: Monitor application and system logs.
 
-## 性能优化
+## Performance optimization
 
-1. **使用Gunicorn**: 生产环境推荐使用Gunicorn
-2. **Nginx反向代理**: 使用Nginx作为前端代理
-3. **数据库优化**: 考虑使用PostgreSQL等生产级数据库
-4. **缓存**: 添加Redis缓存支持 
+1. **Use Gunicorn**: Gunicorn is recommended for production.
+2. **Use an Nginx reverse proxy**: Use Nginx as a frontend proxy.
+3. **Optimize the database**: Consider a production database such as PostgreSQL.
+4. **Add caching**: Add Redis caching support.
