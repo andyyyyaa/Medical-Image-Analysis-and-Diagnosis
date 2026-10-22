@@ -1,5 +1,4 @@
 (() => {
-  const zh = () => document.documentElement.dataset.lang !== 'en';
   const toggle = document.getElementById('menu-toggle');
   const sidebar = document.getElementById('sidebar');
   const backdrop = document.getElementById('sidebar-backdrop');
@@ -34,10 +33,9 @@
   updateSidebar();
   function updateDate() {
     const date = document.getElementById('workspace-date');
-    if (date) { date.dateTime = new Date().toISOString().slice(0,10); date.textContent = new Intl.DateTimeFormat(zh() ? 'zh-CN' : 'en-US', {year:'numeric',month:'long',day:'numeric',weekday:'short'}).format(new Date()); }
+    if (date) { date.dateTime = new Date().toISOString().slice(0,10); date.textContent = new Intl.DateTimeFormat('en-US', {year:'numeric',month:'long',day:'numeric',weekday:'short'}).format(new Date()); }
   }
   updateDate();
-  document.addEventListener('langchange', updateDate);
 
   const form = document.getElementById('xray-form');
   if (!form) return;
@@ -49,9 +47,8 @@
   const submit = document.getElementById('analyze-button');
   const loading = document.getElementById('loading');
   let objectUrl;
-  let errorType = '';
-  const errors = {type:['请选择 JPG 或 PNG 格式的影像。','Please choose a JPG or PNG image.'],size:['影像大小不能超过 15 MB。','The image must be 15 MB or smaller.'],image:['无法读取这张影像，请重新选择。','This image could not be read. Please choose another.']};
-  function showError(type) { errorType=type; error.hidden=!type; error.textContent=type ? errors[type][zh()?0:1] : ''; }
+  const errors = {type:'Please choose a JPG or PNG image.',size:'The image must be 15 MB or smaller.',image:'This image could not be read. Please choose another.'};
+  function showError(type) { error.hidden=!type; error.textContent=type ? errors[type] : ''; }
   function reset() {
     if (objectUrl) URL.revokeObjectURL(objectUrl);
     objectUrl=undefined; image.removeAttribute('src'); input.value=''; preview.hidden=true; zone.hidden=false; showError('');
@@ -77,5 +74,4 @@
   zone.addEventListener('drop',e => { const file=e.dataTransfer.files[0]; if(file){ const transfer=new DataTransfer();transfer.items.add(file);input.files=transfer.files;selected();} });
   form.addEventListener('submit',() => {submit.disabled=true;loading.hidden=false;form.setAttribute('aria-busy','true');});
   window.addEventListener('pageshow',() => {submit.disabled=false;loading.hidden=true;form.removeAttribute('aria-busy');});
-  document.addEventListener('langchange',() => showError(errorType));
 })();
