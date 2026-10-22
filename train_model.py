@@ -52,13 +52,13 @@ with open("heart_model_lr.pkl", "wb") as f:
 from sklearn.linear_model import Perceptron
 print("Perceptron 1.0")
 clf = Perceptron(
-    penalty='l1',              # 使用 L1 正则化
-    alpha=0.05,               # 正则化强度
-    max_iter=10000,             # 最大迭代次数
-    tol=1e-5,                  # 收敛容忍度
-    eta0=0.1,                  # 初始学习率
-    shuffle=True,              # 每次迭代前打乱数据
-    random_state=0,           # 设置随机种子
+    penalty='l1',              # Use L1 regularization
+    alpha=0.05,               # Regularization strength
+    max_iter=10000,             # Maximum number of iterations
+    tol=1e-5,                  # Convergence tolerance
+    eta0=0.1,                  # Initial learning rate
+    shuffle=True,              # Shuffle the data before each iteration
+    random_state=0,           # Set the random seed
 )
 clf.fit(train_X,train_y)
 clfpredictions = clf.predict(test_X)
