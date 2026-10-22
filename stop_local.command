@@ -10,7 +10,7 @@ import subprocess
 
 pid_file = Path('.local/server.pid')
 if not pid_file.exists():
-    print('没有正在运行的本地服务。')
+    print('No local server is running.')
 else:
     pid = int(pid_file.read_text().strip())
     command = subprocess.run(['ps', '-p', str(pid), '-o', 'command='], capture_output=True, text=True).stdout.strip()
@@ -18,8 +18,8 @@ else:
     expected = str(Path('start_local.py').resolve())
     if expected in args or 'start_local.py' in args:
         os.kill(pid, signal.SIGTERM)
-        print('已停止 Healthcare 本地服务。')
+        print('The local Healthcare server has been stopped.')
     else:
-        print('记录的服务进程已退出。')
+        print('The recorded server process has already exited.')
     pid_file.unlink(missing_ok=True)
 PY
